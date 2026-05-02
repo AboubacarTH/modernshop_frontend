@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import {
+import { BarChart2,
   LayoutDashboard, Package, ShoppingBag, Users, Tag,
   LogOut, Menu, X, ChevronRight
 } from 'lucide-react';
@@ -8,7 +8,7 @@ import { useAuthStore } from '@/stores/authStore';
 import clsx from 'clsx';
 
 const NAV = [
-  { href: '/admin',            label: 'Dashboard',  icon: LayoutDashboard, exact: true },
+  { href: '/admin',            label: 'Analytics',  icon: LayoutDashboard, exact: true },
   { href: '/admin/products',   label: 'Products',   icon: Package },
   { href: '/admin/orders',     label: 'Orders',     icon: ShoppingBag },
   { href: '/admin/users',      label: 'Users',      icon: Users },

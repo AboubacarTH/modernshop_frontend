@@ -3,12 +3,14 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import {
   Star, Heart, ShoppingCart, Truck, Shield, RefreshCw,
-  Minus, Plus, ChevronRight, Share2, Check
+  Minus, Plus, ChevronRight, Check
 } from 'lucide-react';
 import api from '@/lib/api';
 import { useCartStore } from '@/stores/cartStore';
 import { useAuthStore } from '@/stores/authStore';
 import ProductCard from '@/components/product/ProductCard';
+import ProductImageGallery from '@/components/product/ProductImageGallery';
+import ProductReviews from '@/components/product/ProductReviews';
 import toast from 'react-hot-toast';
 import clsx from 'clsx';
 
@@ -87,27 +89,9 @@ export default function ProductDetailPage() {
         </nav>
 
         <div className="grid md:grid-cols-2 gap-10 lg:gap-16">
-          {/* Images */}
+          {/* Images — zoom & gallery */}
           <div>
-            <div className="rounded-2xl overflow-hidden bg-dark-50 aspect-square mb-3">
-              <img src={currentImage} alt={product.name} className="w-full h-full object-cover" />
-            </div>
-            {images.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto pb-1">
-                {images.map((img: any, i: number) => (
-                  <button
-                    key={i}
-                    onClick={() => setSelectedImage(i)}
-                    className={clsx(
-                      'flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all',
-                      selectedImage === i ? 'border-primary-500' : 'border-dark-200 hover:border-dark-400'
-                    )}
-                  >
-                    <img src={img.url} alt="" className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
-            )}
+            <ProductImageGallery images={product.images || []} productName={product.name} />
           </div>
 
           {/* Info */}
@@ -140,11 +124,11 @@ export default function ProductDetailPage() {
             {/* Price */}
             <div className="flex items-baseline gap-3 mb-6 p-4 bg-dark-50 rounded-xl">
               <span className={clsx('text-3xl font-bold', hasDiscount ? 'text-primary-600' : 'text-dark-900')}>
-                €{product.final_price?.toFixed(2)}
+                €{product.final_price}
               </span>
               {hasDiscount && (
                 <>
-                  <span className="text-xl text-dark-400 line-through">€{product.price?.toFixed(2)}</span>
+                  <span className="text-xl text-dark-400 line-through">€{product.price}</span>
                   <span className="badge bg-primary-600 text-white font-bold text-sm px-2.5 py-1">
                     -{product.discount_percentage}%
                   </span>
@@ -268,35 +252,13 @@ export default function ProductDetailPage() {
               </div>
             )}
             {activeTab === 'reviews' && (
-              <div>
-                {(product.reviews || []).length === 0 ? (
-                  <div className="text-center py-12 text-dark-400">
-                    <Star size={32} className="mx-auto mb-3 opacity-30" />
-                    <p className="font-medium">No reviews yet</p>
-                    <p className="text-sm mt-1">Be the first to review this product</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {product.reviews.map((review: any) => (
-                      <div key={review.id} className="card p-4">
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <p className="font-semibold text-dark-900 text-sm">{review.user?.name}</p>
-                            <p className="text-xs text-dark-400">{new Date(review.created_at).toLocaleDateString()}</p>
-                          </div>
-                          <div className="flex">
-                            {[1,2,3,4,5].map(s => (
-                              <Star key={s} size={13} className={s <= review.rating ? 'text-amber-400 fill-amber-400' : 'text-dark-200 fill-dark-200'} />
-                            ))}
-                          </div>
-                        </div>
-                        {review.title && <p className="font-medium text-dark-900 text-sm mb-1">{review.title}</p>}
-                        <p className="text-dark-600 text-sm">{review.body}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <ProductReviews
+                productId={product.id}
+                productSlug={product.slug}
+                reviews={product.reviews || []}
+                averageRating={product.average_rating}
+                reviewsCount={product.reviews_count}
+              />
             )}
           </div>
         </div>

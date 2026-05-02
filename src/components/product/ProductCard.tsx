@@ -154,7 +154,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
         {/* Price */}
         <div className="flex items-baseline gap-2 mt-auto pt-1">
           <span className={clsx('font-bold text-base', hasDiscount ? 'text-primary-600' : 'text-dark-900')}>
-            €{product.final_price.toFixed(2)}
+            €{product.final_price}
           </span>
           {hasDiscount && (
             <span className="text-dark-400 line-through text-sm">
