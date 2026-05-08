@@ -93,8 +93,8 @@ export default function LoginPage() {
           {/* Demo hint */}
           <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
             <p className="text-xs text-amber-800 font-medium mb-1">Demo credentials</p>
-            <p className="text-xs text-amber-700">admin@modernshop.com / password</p>
-            <p className="text-xs text-amber-700">user@modernshop.com / password</p>
+            <p className="text-xs text-amber-700">admin@modernshop.test / password</p>
+            <p className="text-xs text-amber-700">user@modernshop.test / password</p>
           </div>
         </div>
       </div>
