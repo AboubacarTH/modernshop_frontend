@@ -204,6 +204,11 @@ This frontend is available for:
 
 ---
 
+🚀 Demo:
+**[https://modernshop.a2-digit.com](https://modernshop.a2-digit.com)**
+
+---
+
 ## 👨‍💻 Author
 
 **AboubacarTH**

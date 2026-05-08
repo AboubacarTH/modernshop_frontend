@@ -23,11 +23,29 @@ const PERKS = [
   { icon: Zap,       title: 'Fast Delivery',   desc: '2-3 business days' },
 ];
 
+function getProductsFromResponse(response: unknown): any[] {
+  if (Array.isArray(response)) return response;
+  if (!response || typeof response !== 'object') return [];
+
+  const { data, products } = response as { data?: unknown; products?: unknown };
+  if (Array.isArray(data)) return data;
+  if (Array.isArray(products)) return products;
+
+  if (data && typeof data === 'object') {
+    const nested = data as { data?: unknown; products?: unknown };
+    if (Array.isArray(nested.data)) return nested.data;
+    if (Array.isArray(nested.products)) return nested.products;
+  }
+
+  return [];
+}
+
 function ProductRow({ title, endpoint, link }: { title: string; endpoint: string; link: string }) {
   const { data, isLoading } = useQuery({
     queryKey: [endpoint],
     queryFn: () => api.get(`/products/${endpoint}`).then(r => r.data),
   });
+  const products = getProductsFromResponse(data).slice(0, 6);
 
   return (
     <section className="py-10">
@@ -50,7 +68,7 @@ function ProductRow({ title, endpoint, link }: { title: string; endpoint: string
                   </div>
                 </div>
               ))
-            : (data || []).slice(0, 6).map((p: any) => (
+            : products.map((p: any) => (
                 <ProductCard key={p.id} product={p} />
               ))
           }

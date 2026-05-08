@@ -12,7 +12,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://modernshop.a2-digit.com',
+        target: 'https://backend-modernshop.a2-digit.com',
         changeOrigin: true,
       },
     },
